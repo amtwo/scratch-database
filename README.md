@@ -1,5 +1,7 @@
 # scratch-database
-Every once in a while, you want to save a chunk of data somewhere "just in case" and you tell yourself you'll clean it up later. But then later never comes.  Save it to your `ScratchDb` and automate the cleanup
+Every once in a while, you want to save a chunk of data somewhere "just in case" and you tell yourself you'll clean it up later. But then later never comes.  Save it to your `scratchdb` and automate the cleanup.
+
+Why "`scratchdb`"? I modeled the name after the built-in `tempdb`.  
 
 Some of this code was never intended to be used by anyone else--it's primarily here for myself, but if you want to use it, make sure you know exactly what it's doing before using any of this code. 
 Some of this code (including the installer!) assumes that the you know better than to save anything important to your scratchdb. 
@@ -10,5 +12,6 @@ By default, the installer will create a database named `scratchdb` (if it doesn'
 * Clone this repo.
 * Open a PowerShell prompt & navigate (ie `Set-Location`) to the `scratch-database` folder you just cloned.
 * From the scratch-database folder, run `Install-LatestScratchdn.ps1 -InstanceName "MyInstance"`
-  * By default, the installer will use `scratchcdb` as the database name. To use a different database name, specify that using the `-DatabaseName` paramater.
+  * By default, the installer will use `scratchdb` as the database name. To use a different database name, specify that using the `-DatabaseName` parameter.
+    * EX) `Install-LatestScratchdn.ps1 -InstanceName "MyInstance" -DatabaseName "💩db"`
   * The `-InstanceName` parameter will accept an array of server names, if you want to deploy to many servers.
