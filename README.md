@@ -3,6 +3,8 @@ Every once in a while, you want to save a chunk of data somewhere "just in case"
 
 Why "`scratchdb`"? I modeled the name after the built-in `tempdb`.  
 
+Retention is set to 90 days by the `DF_ObjectExpiration_KeepUntil` default constraint on `dbo.ObjectExpiration`. If you want to customize the retention, you can alter the default constraint or just modify expiration dates after they are inserted into the table. YOLO
+
 Some of this code was never intended to be used by anyone else--it's primarily here for myself, but if you want to use it, make sure you know exactly what it's doing before using any of this code. 
 Some of this code (including the installer!) assumes that the you know better than to save anything important to your scratchdb. 
 
