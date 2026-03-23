@@ -11,7 +11,7 @@ By default, the installer will create a database named `scratchdb` (if it doesn'
 
 * Clone this repo.
 * Open a PowerShell prompt & navigate (ie `Set-Location`) to the `scratch-database` folder you just cloned.
-* From the scratch-database folder, run `Install-LatestScratchdn.ps1 -InstanceName "MyInstance"`
+* From the scratch-database folder, run `Install-LatestScratchdb.ps1 -InstanceName "MyInstance"`
   * By default, the installer will use `scratchdb` as the database name. To use a different database name, specify that using the `-DatabaseName` parameter.
-    * EX) `Install-LatestScratchdn.ps1 -InstanceName "MyInstance" -DatabaseName "💩db"`
+    * EX) `Install-LatestScratchdb.ps1 -InstanceName "MyInstance" -DatabaseName "💩db"`
   * The `-InstanceName` parameter will accept an array of server names, if you want to deploy to many servers.
