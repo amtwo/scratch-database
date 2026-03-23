@@ -5,6 +5,8 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
+    RAISERROR('Objects created in scratchdb will be automatically dropped after 90 days.', 0, 1) WITH NOWAIT;
+
     DECLARE @EventData XML = EVENTDATA();
     DECLARE @ObjectName sysname = @EventData.value('(/EVENT_INSTANCE/ObjectName)[1]', 'sysname');
     DECLARE @ObjectType sysname = @EventData.value('(/EVENT_INSTANCE/ObjectType)[1]', 'sysname');
