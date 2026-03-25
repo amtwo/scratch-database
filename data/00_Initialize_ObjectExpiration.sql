@@ -1,10 +1,4 @@
-INSERT INTO dbo.ObjectExpiration (ObjectId, ObjectName)
-SELECT o.object_id, o.name
-FROM sys.objects o
-WHERE name IN ('ObjectExpiration','PurgeOldObjects')
-AND NOT EXISTS (SELECT 1 FROM dbo.ObjectExpiration oe WHERE oe.ObjectName = o.name);
-
-UPDATE oe
-SET KeepUntil = '21001231'
-FROM dbo.ObjectExpiration AS oe
-WHERE ObjectName IN ('ObjectExpiration','PurgeOldObjects');
+--At the end of every deploy, do a quick sanity check to ensure the metadata in this table is correct.
+--This will ensure that we are in a good starting position.
+--If there's ever a schema change, we can handle the backfill here, too.
+EXEC dbo.Cleanup_ObjectExpiration @Debug = 0;
