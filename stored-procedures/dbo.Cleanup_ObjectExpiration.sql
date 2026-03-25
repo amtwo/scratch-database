@@ -7,7 +7,7 @@ DECLARE @sql NVARCHAR(MAX);
 
 IF (@Debug = 1)
 BEGIN
-    SELECT 'Debug mode enabled, no objects will be dropped.' AS Msg;
+    SELECT 'Debug mode enabled, no changes will be made to dbo.ObjectExpiration.' AS Msg;
 
 	SELECT  ValidationMessage  = N'Object has been renamed to: ' + o.name,
             oe.ObjectId,
