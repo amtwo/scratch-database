@@ -2,7 +2,7 @@ CREATE TABLE dbo.ObjectExpiration
 (
 	ObjectId    int,
 	ObjectName  sysname,
-	ObjectType  char(2) COLLATE Latin1_General_CI_AS_KS_WS,
+	ObjectType  char(2),
 	CreatedAt   datetime2(0) NOT NULL
 		CONSTRAINT DF_ObjectExpiration_CreatedAt DEFAULT (SYSUTCDATETIME()),
 	CreatedBy	nvarchar(128),
