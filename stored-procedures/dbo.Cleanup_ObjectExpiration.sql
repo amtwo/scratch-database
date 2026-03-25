@@ -59,7 +59,7 @@ BEGIN
                     WHERE oe.ObjectId = o.object_id
                     )
     UNION ALL
-    SELECT  ValidationMessage  = N'Object is pending deletion',
+    SELECT  ValidationMessage  = N'Row is pending deletion',
             oe.ObjectId,
             oe.ObjectName,
             oe.ObjectType,
@@ -67,7 +67,7 @@ BEGIN
             oe.CreatedBy,
             oe.KeepUntil
     FROM dbo.ObjectExpiration AS oe
-    WHERE oe.DroppedAt < DATEADD(YEAR,1, SYSUTCDATETIME());
+    WHERE oe.DroppedAt < DATEADD(YEAR,-1, SYSUTCDATETIME());
 END;
 
 IF (@Debug = 0)
