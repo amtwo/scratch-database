@@ -10,14 +10,17 @@ BEGIN
     DECLARE @EventData XML = EVENTDATA();
     DECLARE @ObjectName sysname = @EventData.value('(/EVENT_INSTANCE/ObjectName)[1]', 'sysname');
     DECLARE @ObjectType sysname = @EventData.value('(/EVENT_INSTANCE/ObjectType)[1]', 'sysname');
+    DECLARE @LoginName sysname = @EventData.value('(/EVENT_INSTANCE/LoginName)[1]', 'sysname');
 
     -- Prevent the trigger from logging its own creation or system objects if necessary
     IF @ObjectName IS NOT NULL
     BEGIN
-        INSERT INTO dbo.ObjectExpiration (ObjectId, ObjectName)
+        INSERT INTO dbo.ObjectExpiration (ObjectId, ObjectName, ObjectType, CreatedBy)
         VALUES (
             OBJECT_ID(@ObjectName), 
-            @ObjectName
+            @ObjectName,
+            @ObjectType,
+            @LoginName
         );
     END
 END;
