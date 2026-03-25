@@ -1,4 +1,4 @@
-CREATE OR ALTER PROCEDURE dbo.PurgeOldObjects 
+CREATE OR ALTER PROCEDURE dbo.Purge_OldObjects 
 	@ObjectTypes	nvarchar(100) = 'U,V,P,IF,FN',
 	@Debug			bit = 1
 AS
