@@ -11,6 +11,6 @@ CREATE TABLE dbo.ObjectExpiration
 	DroppedAt   datetime2(0),
 	CONSTRAINT PK_Keeplist PRIMARY KEY CLUSTERED (ObjectId) WITH (DATA_COMPRESSION = PAGE),
 	INDEX IX_ObjectExpiration_KeepUntil NONCLUSTERED (KeepUntil) WHERE DeletedAt IS NULL WITH (DATA_COMPRESSION = PAGE),
-    INDEX IX_ObjectExpiration_DeletedAt NONCLUSTERED (DeletedAt) WITH (DATA_COMPRESSION = PAGE)
+    INDEX IX_ObjectExpiration_DeletedAt NONCLUSTERED (DroppedAt) WITH (DATA_COMPRESSION = PAGE)
 );
 GO
