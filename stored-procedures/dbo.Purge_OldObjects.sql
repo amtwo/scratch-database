@@ -5,12 +5,17 @@ AS
 SET NOCOUNT ON;
 
 /*
-* If there exists an object in the table that isn't in the ObjectExpiration table, add it to the table with a default expiration date from column default.
-*      This can happen if an object is created while the trigger is disabled, or if the object is renamed.
-* After the object's expiration date, drop the object and update the DeletedAt column in the ObjectExpiration table.
+First, make sure that the ObjectExpiration table is in good shape.
+    * Core/built-in objects not configured correctly
+    * Renamed objects
+    * Anything created while the LogNewObject trigger was not enabled
 */
+EXEC dbo.Cleanup_ObjectExpiration @Debug = @Debug;
 
---          DECLARE @ObjectTypes	nvarchar(100)  = 'U,V,P,IF,FN';
+
+/*
+Now we can do our thing.
+*/
 
 DECLARE @sql NVARCHAR(MAX);
 
@@ -25,18 +30,6 @@ BEGIN
     RAISERROR('Invalid object type specified in @ObjectTypes. Valid types are U,V,P,IF,FN', 16, 1);
     RETURN;
 END
-
-/* Insert any objects that aren't already in the ObjectExpiration table; 
-   Ex, renames, things that slipped by the trigger, etc.*/
-INSERT INTO dbo.ObjectExpiration (ObjectId, ObjectName)
-SELECT o.object_id, o.name
-FROM sys.objects o
-WHERE o.type IN (SELECT ObjectType FROM @CleanupTypes)
-AND NOT EXISTS (SELECT 1 
-                FROM dbo.ObjectExpiration oe 
-                WHERE oe.ObjectName = o.name
-                AND oe.DeletedAt IS NULL
-                );
 
 CREATE TABLE #ObjectsToDrop (DropSQL nvarchar(max));
 
@@ -54,7 +47,7 @@ SELECT DropSQL = N'
 FROM dbo.ObjectExpiration oe
 JOIN sys.objects o ON o.object_id = oe.ObjectId
 JOIN @CleanupTypes ct ON ct.ObjectType = o.type
-WHERE oe.DeletedAt IS NULL
+WHERE oe.DroppedAt IS NULL
 AND oe.KeepUntil < SYSUTCDATETIME();
 
 /* If debug is enabled, print the objects that would be dropped, but don't actually drop them. */
@@ -80,9 +73,5 @@ BEGIN
         FETCH NEXT FROM @drop_cursor INTO @sql;
     END
 
-    /* purge old records from the ObjectExpiration table, one year after the object is dropped; */
-    DELETE oe
-    FROM dbo.ObjectExpiration oe
-    WHERE DeletedAt < DATEADD(YEAR,1, SYSUTCDATETIME())
 END
 GO
